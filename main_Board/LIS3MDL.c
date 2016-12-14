@@ -6,7 +6,7 @@ void Magnetometer_SPI_CONFIG(void){
 
   SPI_MAG ->CR1 =0;                                          
   SPI_MAG ->CR1 |= SPI_CR1_MSTR                                                     //Master mode
-              | SPI_CR1_BR_2                                                   //Set baud rate(=f pclk/256)
+              | SPI_CR1_BR                                                  //Set baud rate(=f pclk/256)
               | SPI_CR1_SSM
               | SPI_CR1_SSI;
 
@@ -62,7 +62,7 @@ void LIS3MDL_reg_write(uint32_t address, uint8_t* ptr){
 uint8_t LIS3MDL_Read_data_XYZ(uint16_t* data_ptr){
   STATUS_REG_t temp_state;
     uint8_t temp_data_L, temp_data_H;
-  uint16_t temp_data;
+  uint16_t temp_data,temp_rez;
   
   
   *(uint8_t*)((uint8_t*)&temp_state) =0;
@@ -81,10 +81,12 @@ uint8_t LIS3MDL_Read_data_XYZ(uint16_t* data_ptr){
     
   ////////////////////
   if( ( (temp_data & 0x8000) >> 15) > 0){
-      temp_data = ((~temp_data +1) &0x7FFF)|0x8000; 
+      temp_rez = ((~temp_data +1) &0x7FFF)|0x8000; 
      }
-  
-  *((uint16_t*)data_ptr + a_cnt) = temp_data;
+  else{
+      temp_rez = temp_data;
+      }
+  *((uint16_t*)data_ptr + a_cnt) = temp_rez;
   ////////////////////////////
    
     }

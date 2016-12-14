@@ -3,20 +3,20 @@
 #include "LIS3MDL.h"
 #include "stm32f10x_usart.h"
 
-#define AVG_MAX 50
+#define AVG_MAX 1000
 #define MAX_CNT 64000
 /////////////////Function prototypes////////////////
 uint8_t CALC_CHEKSUM (uint16_t length, uint8_t* ptr);
 void SEND_UART_data(uint8_t* tx_buffer, uint8_t data_length);
 ////////////////Global variables definition////////
 uint8_t receive_data[10];
-uint16_t AVG_offset_data[6];
+long long AVG_offset_data[6];
 uint8_t rx_counter1=0;
 static uint8_t UART_TX_BUFFER[25] ={0xAA,0xBE,0x1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0} ;
 uint32_t avg_cnt =0;
-
+  long sum = 0;
 SERIAL_PORT_msg_t SERIAL_PORT_msg;
- uint8_t read_status=1;
+ uint8_t read_status=2;
 CTRL_REG1_t CTRL_REG1;
 CTRL_REG2_t CTRL_REG2;
 CTRL_REG3_t CTRL_REG3;
@@ -110,7 +110,7 @@ void main()
   GYRO_SPI_CONFIG();
   Magnetometer_SPI_CONFIG();
   ///////////////Magnetometer/////////////
-  CTRL_REG1.OUT_DATA_RATE = DATA_RATE_80_HZ;
+  CTRL_REG1.OUT_DATA_RATE = DATA_RATE_40_HZ;
   CTRL_REG1.TEMP_EN = 0x0;
   
   CTRL_REG2.FULL_SCALE_CONFIG = FULL_SCALE_4_gauss; 
@@ -128,10 +128,10 @@ void main()
   LIS3MDL_reg_write(CTRL_REG_2,(uint8_t*)&CTRL_REG2);
   LIS3MDL_reg_write(CTRL_REG_3,(uint8_t*)&CTRL_REG3);
   LIS3MDL_reg_write(CTRL_REG_4,(uint8_t*)&CTRL_REG4);
-  LIS3MDL_reg_write(INT_CFG_REG,(uint8_t*)&MAG_INT_CFG);
+  //LIS3MDL_reg_write(INT_CFG_REG,(uint8_t*)&MAG_INT_CFG);
   ///////Gyroscope//////
   MPU6500_GyroSetiings.FCHOICE_Bypass = 0;
-  MPU6500_GyroSetiings.GYRO_FULL_SCALE_SEL = GYRO_FULL_SCALE_250dps;
+  MPU6500_GyroSetiings.GYRO_FULL_SCALE_SEL = GYRO_FULL_SCALE_500dps;
   MPU6500_GyroSetiings.GYRO_self_test_X= 0;
   MPU6500_GyroSetiings.GYRO_self_test_Y= 0;
   MPU6500_GyroSetiings.GYRO_self_test_Z= 0;
@@ -157,6 +157,14 @@ void main()
   acc_gyro_data_ptr = (uint16_t *)&MPU6500_out_data;
   mag_data_ptr = (uint16_t *)&Mag_data;
   
+
+for(int i=0; i < AVG_MAX; i++)
+{ 
+}
+
+  
+  
+  
   for(uint16_t t=0; t < AVG_MAX; t++){
     while(!GYRO_INT_RDY){};
     
@@ -164,15 +172,14 @@ void main()
       if(INT_STATUS_REG.RAW_DATA_RDY_INT==1){
         INT_STATUS_REG.RAW_DATA_RDY_INT=0;
        READ_RAW_ACC_GYRO_data((uint16_t*)&MPU6500_RAW_data);
-    for(uint8_t k=0;k < 3; k++){
-      AVG_offset_data[k] = AVG_offset_data[k] + *((uint16_t *)raw_data_ptr + k);
-      AVG_offset_data[k+3] = AVG_offset_data[k+3] + *((uint16_t *)raw_data_ptr + k + 3);
-    }
+      
+    for(uint8_t k=0;k < 6; k++){
+     AVG_offset_data[k] = AVG_offset_data[k] + *((uint16_t *)raw_data_ptr + k);
 
     }
-    
+    }
   }
-  
+
   for(uint8_t i=0;i < 3; i++){
     AVG_offset_data[i] = AVG_offset_data[i]/AVG_MAX;
     AVG_offset_data[i+3] = AVG_offset_data[i+3]/AVG_MAX;
@@ -184,32 +191,20 @@ void main()
  ///////////////////////////////////////////////////////   
     
     if(GYRO_INT_RDY){
-      /////////////////////////////////////////////////////////////////////////////
       MPU6500_reg_read(INT_STATUS,(uint8_t*)&INT_STATUS_REG);
-      if(INT_STATUS_REG.RAW_DATA_RDY_INT==1){
-        INT_STATUS_REG.RAW_DATA_RDY_INT=0;
-        READ_ACC_GYRO_data((uint16_t*)&MPU6500_out_data);
-        if(avg_cnt < AVG_MAX){
-          for(uint8_t k=0;k < 3; k++){
-            AVG_offset_data[k] = AVG_offset_data[k] + *((uint16_t *)acc_gyro_data_ptr + k);
-            AVG_offset_data[k+3] = AVG_offset_data[k+3] + *((uint16_t *)acc_gyro_data_ptr + k + 3);
-          }
-          avg_cnt++;
-        }
-        else{
-        avg_cnt =0;
-        
+        if(INT_STATUS_REG.RAW_DATA_RDY_INT==1){
+          INT_STATUS_REG.RAW_DATA_RDY_INT=0;
+          READ_ACC_GYRO_data((uint16_t*)&MPU6500_out_data);
         for(uint8_t i=0;i < 6; i++){
-          AVG_offset_data[i] = AVG_offset_data[i]/AVG_MAX;
-          *(uint16_t*)(UART_TX_BUFFER + 3 + 2*i) = AVG_offset_data[i];
+          UART_TX_BUFFER[ 3 + 2*i] = *((uint16_t *)acc_gyro_data_ptr + i);
         }
         
-        }
         read_status = LIS3MDL_Read_data_XYZ((uint16_t*)&Mag_data);
         if(read_status==0){
           for(uint8_t i=0;i < 3; i++){
-            *(uint16_t*)(UART_TX_BUFFER + 16 + 2*i) = *((uint16_t *)mag_data_ptr + i);
+            UART_TX_BUFFER[16 + 2*i] = *((uint16_t *)mag_data_ptr + i);
           }
+          read_status =2;
         }
         SEND_UART_data((uint8_t*)&UART_TX_BUFFER, 22);
       }
@@ -217,7 +212,6 @@ void main()
     }
     
       
-   
      for(int t=0;t<100;t++){};
   // 
   }

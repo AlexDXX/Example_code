@@ -142,7 +142,19 @@ typedef struct
   uint8_t Y_INT_EN:1;
   uint8_t X_INT_EN:1;
 }INT_CFG_t;
+
 ///////////////////////////////
+typedef struct 
+{
+ uint8_t INT:1;
+ uint8_t MROI:1;
+ uint8_t NTH_Z:1;
+ uint8_t NTH_Y:1;
+ uint8_t NTH_X:1;
+ uint8_t PTH_Z:1;
+ uint8_t PTH_Y:1;
+ uint8_t PTH_X:1;
+}INT_SRC_t;
 
 void LIS3MDL_reg_read(uint32_t address, uint8_t* ptr);
 void LIS3MDL_reg_write(uint32_t address, uint8_t* ptr);

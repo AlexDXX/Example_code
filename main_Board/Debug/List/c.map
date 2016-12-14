@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR ELF Linker V7.50.2.10312/W32 for ARM                14/Dec/2016  13:44:21
+# IAR ELF Linker V7.50.2.10312/W32 for ARM                14/Dec/2016  17:33:46
 # Copyright 2007-2015 IAR Systems AB.
 #
 #    Output file  =  
@@ -53,77 +53,27 @@ __SystemLibrary = DLib
   .intvec            ro code  0x08000000   0x130  startup_stm32f10x_hd.o [1]
                             - 0x08000130   0x130
 
-"P1":                                      0xee0
-  .text              ro code  0x08000130   0x71c  main.o [1]
-  .text              ro code  0x0800084c   0x1f4  MPU6500.o [1]
-  .text              ro code  0x08000a40   0x1c6  LIS3MDL.o [1]
-  .text              ro code  0x08000c08    0x56  ABImemcpy_unaligned.o [4]
-  .text              ro code  0x08000c60   0x158  system_stm32f10x.o [1]
-  .text              ro code  0x08000db8    0x40  zero_init3.o [4]
-  .text              ro code  0x08000df8    0x38  packbits_init_single.o [4]
-  .text              ro code  0x08000e30    0x28  data_init.o [4]
-  .iar.init_table    const    0x08000e58    0x20  - Linker created -
-  .text              ro code  0x08000e78    0x1a  cmain.o [4]
-  .text              ro code  0x08000e92     0x4  low_level_init.o [3]
-  .text              ro code  0x08000e96     0x4  exit.o [3]
-  .text              ro code  0x08000e9c     0xa  cexit.o [4]
-  .text              ro code  0x08000ea8    0x14  exit.o [5]
-  .rodata            const    0x08000ebc    0x10  MPU6500.o [1]
-  .rodata            const    0x08000ecc    0x10  MPU6500.o [1]
-  .text              ro code  0x08000edc    0x10  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000eec     0xc  cstartup_M.o [4]
-  .text              ro code  0x08000ef8     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000efc     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f00     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f04     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f08     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f0c     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f10     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f14     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f18     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f1c     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f20     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f24     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f28     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f2c     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f30     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f34     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f38     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f3c     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f40     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f44     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f48     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f4c     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f50     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f54     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f58     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f5c     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f60     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f64     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f68     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f6c     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f70     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f74     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f78     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f7c     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f80     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f84     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f88     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f8c     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f90     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f94     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f98     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000f9c     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000fa0     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000fa4     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000fa8     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000fac     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000fb0     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000fb4     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000fb8     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000fbc     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000fc0     0x4  startup_stm32f10x_hd.o [1]
-  .text              ro code  0x08000fc4     0x4  startup_stm32f10x_hd.o [1]
+"P1":                                      0xfb0
+  .text              ro code  0x08000130   0x6a8  main.o [1]
+  .text              ro code  0x080007d8   0x1f4  MPU6500.o [1]
+  .text              ro code  0x080009cc   0x1d4  LIS3MDL.o [1]
+  .text              ro code  0x08000ba0   0x132  I64DivMod.o [4]
+  .text              ro code  0x08000cd4    0x56  ABImemcpy_unaligned.o [4]
+  .text              ro code  0x08000d2c     0x2  I64DivZer.o [4]
+  .text              ro code  0x08000d30   0x158  system_stm32f10x.o [1]
+  .text              ro code  0x08000e88    0x40  zero_init3.o [4]
+  .text              ro code  0x08000ec8    0x38  packbits_init_single.o [4]
+  .text              ro code  0x08000f00    0x28  data_init.o [4]
+  .iar.init_table    const    0x08000f28    0x20  - Linker created -
+  .text              ro code  0x08000f48    0x1a  cmain.o [4]
+  .text              ro code  0x08000f62     0x4  low_level_init.o [3]
+  .text              ro code  0x08000f66     0x4  exit.o [3]
+  .text              ro code  0x08000f6c     0xa  cexit.o [4]
+  .text              ro code  0x08000f78    0x14  exit.o [5]
+  .rodata            const    0x08000f8c    0x10  MPU6500.o [1]
+  .rodata            const    0x08000f9c    0x10  MPU6500.o [1]
+  .text              ro code  0x08000fac    0x10  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08000fbc     0xc  cstartup_M.o [4]
   .text              ro code  0x08000fc8     0x4  startup_stm32f10x_hd.o [1]
   .text              ro code  0x08000fcc     0x4  startup_stm32f10x_hd.o [1]
   .text              ro code  0x08000fd0     0x4  startup_stm32f10x_hd.o [1]
@@ -140,10 +90,62 @@ __SystemLibrary = DLib
   .text              ro code  0x08000ffc     0x4  startup_stm32f10x_hd.o [1]
   .text              ro code  0x08001000     0x4  startup_stm32f10x_hd.o [1]
   .text              ro code  0x08001004     0x4  startup_stm32f10x_hd.o [1]
-  .rodata            const    0x08001008     0x0  zero_init3.o [4]
-  .rodata            const    0x08001008     0x0  packbits_init_single.o [4]
-  Initializer bytes  const    0x08001008     0x8  <for P2-1>
-                            - 0x08001010   0xee0
+  .text              ro code  0x08001008     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x0800100c     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001010     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001014     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001018     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x0800101c     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001020     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001024     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001028     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x0800102c     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001030     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001034     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001038     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x0800103c     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001040     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001044     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001048     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x0800104c     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001050     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001054     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001058     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x0800105c     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001060     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001064     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001068     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x0800106c     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001070     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001074     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001078     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x0800107c     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001080     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001084     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001088     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x0800108c     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001090     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001094     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x08001098     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x0800109c     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x080010a0     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x080010a4     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x080010a8     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x080010ac     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x080010b0     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x080010b4     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x080010b8     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x080010bc     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x080010c0     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x080010c4     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x080010c8     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x080010cc     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x080010d0     0x4  startup_stm32f10x_hd.o [1]
+  .text              ro code  0x080010d4     0x4  startup_stm32f10x_hd.o [1]
+  .rodata            const    0x080010d8     0x0  zero_init3.o [4]
+  .rodata            const    0x080010d8     0x0  packbits_init_single.o [4]
+  Initializer bytes  const    0x080010d8     0x8  <for P2-1>
+                            - 0x080010e0   0xfb0
 
 "P2", part 1 of 3:                          0x1d
   P2-1                        0x20000000    0x1d  <Init block>
@@ -156,27 +158,26 @@ __SystemLibrary = DLib
     CSTACK           uninit   0x20000020  0x1000  <Block tail>
                             - 0x20001020  0x1000
 
-"P2", part 3 of 3:                          0x70
-  .bss               zero     0x20001020     0xc  main.o [1]
-  .bss               zero     0x2000102c     0xc  main.o [1]
-  .bss               zero     0x20001038     0xc  main.o [1]
-  .bss               zero     0x20001044     0xc  main.o [1]
-  .bss               zero     0x20001050     0x8  main.o [1]
-  .bss               zero     0x20001058     0x4  main.o [1]
-  .bss               zero     0x2000105c     0x4  main.o [1]
-  .bss               zero     0x20001060     0x4  main.o [1]
-  .bss               zero     0x20001064     0x4  main.o [1]
-  .bss               zero     0x20001068     0x4  main.o [1]
-  .bss               zero     0x2000106c     0x4  main.o [1]
-  .bss               zero     0x20001070     0x4  main.o [1]
-  .bss               zero     0x20001074     0x4  main.o [1]
-  .bss               zero     0x20001078     0x4  main.o [1]
+"P2", part 3 of 3:                          0x90
+  .bss               zero     0x20001020    0x30  main.o [1]
+  .bss               zero     0x20001050     0xc  main.o [1]
+  .bss               zero     0x2000105c     0xc  main.o [1]
+  .bss               zero     0x20001068     0xc  main.o [1]
+  .bss               zero     0x20001074     0x8  main.o [1]
   .bss               zero     0x2000107c     0x4  main.o [1]
   .bss               zero     0x20001080     0x4  main.o [1]
   .bss               zero     0x20001084     0x4  main.o [1]
   .bss               zero     0x20001088     0x4  main.o [1]
-  .bss               zero     0x2000108c     0x1  main.o [1]
-                            - 0x2000108d    0x6d
+  .bss               zero     0x2000108c     0x4  main.o [1]
+  .bss               zero     0x20001090     0x4  main.o [1]
+  .bss               zero     0x20001094     0x4  main.o [1]
+  .bss               zero     0x20001098     0x4  main.o [1]
+  .bss               zero     0x2000109c     0x4  main.o [1]
+  .bss               zero     0x200010a0     0x4  main.o [1]
+  .bss               zero     0x200010a4     0x4  main.o [1]
+  .bss               zero     0x200010a8     0x4  main.o [1]
+  .bss               zero     0x200010ac     0x1  main.o [1]
+                            - 0x200010ad    0x8d
 
 
 *******************************************************************************
@@ -186,12 +187,12 @@ __SystemLibrary = DLib
           Address     Size
           -------     ----
 Zero (__iar_zero_init3)
-    1 destination range, total size 0x6d:
-          0x20001020  0x6d
+    1 destination range, total size 0x8d:
+          0x20001020  0x8d
 
 Copy/packbits (__iar_packbits_init_single3)
     1 source range, total size 0x8 (27% of destination):
-          0x08001008   0x8
+          0x080010d8   0x8
     1 destination range, total size 0x1d:
           0x20000000  0x1d
 
@@ -204,13 +205,13 @@ Copy/packbits (__iar_packbits_init_single3)
     Module                  ro code  ro data  rw data
     ------                  -------  -------  -------
 D:\Dropbox\exchange\IAR PROJECTS\GIT_repository\main_Board\Debug\Obj: [1]
-    LIS3MDL.o                   454
+    LIS3MDL.o                   468
     MPU6500.o                   500       32
-    main.o                    1 820        8      138
+    main.o                    1 704        8      170
     startup_stm32f10x_hd.o      592
     system_stm32f10x.o          344
     -------------------------------------------------
-    Total:                    3 710       40      138
+    Total:                    3 608       40      170
 
 command line: [2]
     -------------------------------------------------
@@ -224,6 +225,8 @@ dl7M_tln.a: [3]
 
 rt7M_tl.a: [4]
     ABImemcpy_unaligned.o        86
+    I64DivMod.o                 306
+    I64DivZer.o                   2
     cexit.o                      10
     cmain.o                      26
     cstartup_M.o                 12
@@ -231,17 +234,17 @@ rt7M_tl.a: [4]
     packbits_init_single.o       56
     zero_init3.o                 64
     -------------------------------------------------
-    Total:                      294
+    Total:                      602
 
 shb_l.a: [5]
     exit.o                       20
     -------------------------------------------------
     Total:                       20
 
-    Gaps                          8
+    Gaps                         10
     Linker created                        32    4 096
 -----------------------------------------------------
-    Grand Total:              4 040       72    4 234
+    Grand Total:              4 248       72    4 266
 
 
 *******************************************************************************
@@ -250,68 +253,70 @@ shb_l.a: [5]
 
 Entry                      Address   Size  Type      Object
 -----                      -------   ----  ----      ------
-.iar.init_table$$Base   0x08000e58          --   Gb  - Linker created -
-.iar.init_table$$Limit  0x08000e78          --   Gb  - Linker created -
-?main                   0x08000e79         Code  Gb  cmain.o [4]
-AVG_offset_data         0x2000102c    0xc  Data  Gb  main.o [1]
-CALC_CHEKSUM            0x08000749   0x1c  Code  Gb  main.o [1]
+.iar.init_table$$Base   0x08000f28          --   Gb  - Linker created -
+.iar.init_table$$Limit  0x08000f48          --   Gb  - Linker created -
+?main                   0x08000f49         Code  Gb  cmain.o [4]
+AVG_offset_data         0x20001020   0x30  Data  Gb  main.o [1]
+CALC_CHEKSUM            0x080006d9   0x1c  Code  Gb  main.o [1]
 CSTACK$$Base            0x20000020          --   Gb  - Linker created -
 CSTACK$$Limit           0x20001020          --   Gb  - Linker created -
-CTRL_REG1               0x2000105c    0x4  Data  Gb  main.o [1]
-CTRL_REG2               0x20001060    0x4  Data  Gb  main.o [1]
-CTRL_REG3               0x20001064    0x4  Data  Gb  main.o [1]
-CTRL_REG4               0x20001068    0x4  Data  Gb  main.o [1]
-GYRO_SPI_CONFIG         0x0800084d   0x80  Code  Gb  MPU6500.o [1]
-INT_Enable_Setiings     0x20001080    0x4  Data  Gb  main.o [1]
-INT_Pin_Config          0x20001088    0x4  Data  Gb  main.o [1]
-INT_STATUS_REG          0x20001084    0x4  Data  Gb  main.o [1]
-LIS3MDL_Read_data_XYZ   0x08000b6d   0x9a  Code  Gb  LIS3MDL.o [1]
-LIS3MDL_reg_read        0x08000ac1   0x56  Code  Gb  LIS3MDL.o [1]
-LIS3MDL_reg_write       0x08000b17   0x40  Code  Gb  LIS3MDL.o [1]
-MAG_INT_CFG             0x2000106c    0x4  Data  Gb  main.o [1]
-MPU6500_ACC_Setiings    0x20001078    0x4  Data  Gb  main.o [1]
-MPU6500_ACC_Setiings2   0x2000107c    0x4  Data  Gb  main.o [1]
-MPU6500_Config          0x20001070    0x4  Data  Gb  main.o [1]
-MPU6500_GyroSetiings    0x20001074    0x4  Data  Gb  main.o [1]
-MPU6500_RAW_data        0x20001038    0xc  Data  Gb  main.o [1]
-MPU6500_out_data        0x20001044    0xc  Data  Gb  main.o [1]
-MPU6500_reg_read        0x0800090f   0x54  Code  Gb  MPU6500.o [1]
-MPU6500_reg_write       0x080008cd   0x42  Code  Gb  MPU6500.o [1]
-Mag_data                0x20001050    0x8  Data  Gb  main.o [1]
+CTRL_REG1               0x2000107c    0x4  Data  Gb  main.o [1]
+CTRL_REG2               0x20001080    0x4  Data  Gb  main.o [1]
+CTRL_REG3               0x20001084    0x4  Data  Gb  main.o [1]
+CTRL_REG4               0x20001088    0x4  Data  Gb  main.o [1]
+GYRO_SPI_CONFIG         0x080007d9   0x80  Code  Gb  MPU6500.o [1]
+INT_Enable_Setiings     0x200010a0    0x4  Data  Gb  main.o [1]
+INT_Pin_Config          0x200010a8    0x4  Data  Gb  main.o [1]
+INT_STATUS_REG          0x200010a4    0x4  Data  Gb  main.o [1]
+LIS3MDL_Read_data_XYZ   0x08000af9   0xa8  Code  Gb  LIS3MDL.o [1]
+LIS3MDL_reg_read        0x08000a4d   0x56  Code  Gb  LIS3MDL.o [1]
+LIS3MDL_reg_write       0x08000aa3   0x40  Code  Gb  LIS3MDL.o [1]
+MAG_INT_CFG             0x2000108c    0x4  Data  Gb  main.o [1]
+MPU6500_ACC_Setiings    0x20001098    0x4  Data  Gb  main.o [1]
+MPU6500_ACC_Setiings2   0x2000109c    0x4  Data  Gb  main.o [1]
+MPU6500_Config          0x20001090    0x4  Data  Gb  main.o [1]
+MPU6500_GyroSetiings    0x20001094    0x4  Data  Gb  main.o [1]
+MPU6500_RAW_data        0x2000105c    0xc  Data  Gb  main.o [1]
+MPU6500_out_data        0x20001068    0xc  Data  Gb  main.o [1]
+MPU6500_reg_read        0x0800089b   0x54  Code  Gb  MPU6500.o [1]
+MPU6500_reg_write       0x08000859   0x42  Code  Gb  MPU6500.o [1]
+Mag_data                0x20001074    0x8  Data  Gb  main.o [1]
 Magnetometer_SPI_CONFIG
-                        0x08000a41   0x80  Code  Gb  LIS3MDL.o [1]
-READ_ACC_GYRO_data      0x08000963   0x6e  Code  Gb  MPU6500.o [1]
-READ_RAW_ACC_GYRO_data  0x080009d1   0x52  Code  Gb  MPU6500.o [1]
-Region$$Table$$Base     0x08000e58          --   Gb  - Linker created -
-Region$$Table$$Limit    0x08000e78          --   Gb  - Linker created -
-SEND_UART_data          0x08000765   0x40  Code  Gb  main.o [1]
-SetSysClock             0x08000cb5    0x8  Code  Lc  system_stm32f10x.o [1]
-SetSysClockTo72         0x08000cbd   0xe0  Code  Lc  system_stm32f10x.o [1]
-SystemInit              0x08000c61   0x54  Code  Gb  system_stm32f10x.o [1]
+                        0x080009cd   0x80  Code  Gb  LIS3MDL.o [1]
+READ_ACC_GYRO_data      0x080008ef   0x6e  Code  Gb  MPU6500.o [1]
+READ_RAW_ACC_GYRO_data  0x0800095d   0x52  Code  Gb  MPU6500.o [1]
+Region$$Table$$Base     0x08000f28          --   Gb  - Linker created -
+Region$$Table$$Limit    0x08000f48          --   Gb  - Linker created -
+SEND_UART_data          0x080006f5   0x40  Code  Gb  main.o [1]
+SetSysClock             0x08000d85    0x8  Code  Lc  system_stm32f10x.o [1]
+SetSysClockTo72         0x08000d8d   0xe0  Code  Lc  system_stm32f10x.o [1]
+SystemInit              0x08000d31   0x54  Code  Gb  system_stm32f10x.o [1]
 UART_TX_BUFFER          0x20000000   0x1c  Data  Lc  main.o [1]
-USART1_IRQHandler       0x08000729   0x20  Code  Gb  main.o [1]
-__cmain                 0x08000e79         Code  Gb  cmain.o [4]
-__exit                  0x08000ea9   0x14  Code  Gb  exit.o [5]
-__iar_data_init3        0x08000e31   0x28  Code  Gb  data_init.o [4]
+USART1_IRQHandler       0x080006b9   0x20  Code  Gb  main.o [1]
+__aeabi_ldiv0           0x08000d2d         Code  Gb  I64DivZer.o [4]
+__aeabi_ldivmod         0x08000ba1         Code  Gb  I64DivMod.o [4]
+__aeabi_uldivmod        0x08000be5         Code  Gb  I64DivMod.o [4]
+__cmain                 0x08000f49         Code  Gb  cmain.o [4]
+__exit                  0x08000f79   0x14  Code  Gb  exit.o [5]
+__iar_data_init3        0x08000f01   0x28  Code  Gb  data_init.o [4]
 __iar_packbits_init_single3
-                        0x08000df9   0x38  Code  Gb  packbits_init_single.o [4]
-__iar_program_start     0x08000eed         Code  Gb  cstartup_M.o [4]
+                        0x08000ec9   0x38  Code  Gb  packbits_init_single.o [4]
+__iar_program_start     0x08000fbd         Code  Gb  cstartup_M.o [4]
 __iar_unaligned___aeabi_memcpy4
-                        0x08000c09         Code  Gb  ABImemcpy_unaligned.o [4]
+                        0x08000cd5         Code  Gb  ABImemcpy_unaligned.o [4]
 __iar_unaligned___aeabi_memcpy8
-                        0x08000c09         Code  Gb  ABImemcpy_unaligned.o [4]
-__iar_zero_init3        0x08000db9   0x40  Code  Gb  zero_init3.o [4]
-__low_level_init        0x08000e93    0x4  Code  Gb  low_level_init.o [3]
+                        0x08000cd5         Code  Gb  ABImemcpy_unaligned.o [4]
+__iar_zero_init3        0x08000e89   0x40  Code  Gb  zero_init3.o [4]
+__low_level_init        0x08000f63    0x4  Code  Gb  low_level_init.o [3]
 __vector_table          0x08000000         Data  Gb  startup_stm32f10x_hd.o [1]
-_call_main              0x08000e85         Code  Gb  cmain.o [4]
-_exit                   0x08000e9d         Code  Gb  cexit.o [4]
-_main                   0x08000e8f         Code  Gb  cmain.o [4]
-avg_cnt                 0x20001058    0x4  Data  Gb  main.o [1]
-exit                    0x08000e97    0x4  Code  Gb  exit.o [3]
-main                    0x08000131  0x5f8  Code  Gb  main.o [1]
+_call_main              0x08000f55         Code  Gb  cmain.o [4]
+_exit                   0x08000f6d         Code  Gb  cexit.o [4]
+_main                   0x08000f5f         Code  Gb  cmain.o [4]
+exit                    0x08000f67    0x4  Code  Gb  exit.o [3]
+main                    0x08000131  0x588  Code  Gb  main.o [1]
 read_status             0x2000001c    0x1  Data  Gb  main.o [1]
-receive_data            0x20001020    0xc  Data  Gb  main.o [1]
-rx_counter1             0x2000108c    0x1  Data  Gb  main.o [1]
+receive_data            0x20001050    0xc  Data  Gb  main.o [1]
+rx_counter1             0x200010ac    0x1  Data  Gb  main.o [1]
 
 
 [1] = D:\Dropbox\exchange\IAR PROJECTS\GIT_repository\main_Board\Debug\Obj
@@ -320,9 +325,9 @@ rx_counter1             0x2000108c    0x1  Data  Gb  main.o [1]
 [4] = rt7M_tl.a
 [5] = shb_l.a
 
-  4 040 bytes of readonly  code memory
+  4 248 bytes of readonly  code memory
      72 bytes of readonly  data memory
-  4 234 bytes of readwrite data memory
+  4 266 bytes of readwrite data memory
 
 Errors: none
 Warnings: none

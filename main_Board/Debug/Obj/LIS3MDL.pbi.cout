@@ -1,18 +1,18 @@
-"D:\Dropbox\exchange\IAR PROJECTS\ANT_vertical_control\main_Board\LIS3MDL.c"
+"D:\Dropbox\exchange\IAR PROJECTS\GIT_repository\main_Board\LIS3MDL.c"
 -std=c99
 -ferror-limit=100
 -I
-D:\Dropbox\exchange\IAR PROJECTS\ANT_vertical_control\main_Board
+D:\Dropbox\exchange\IAR PROJECTS\GIT_repository\main_Board
 -I
-D:\Dropbox\exchange\IAR PROJECTS\ANT_vertical_control\main_Board/FreeRTOS/sources
+D:\Dropbox\exchange\IAR PROJECTS\GIT_repository\main_Board/FreeRTOS/sources
 -I
-D:\Dropbox\exchange\IAR PROJECTS\ANT_vertical_control\main_Board/FreeRTOS/include
+D:\Dropbox\exchange\IAR PROJECTS\GIT_repository\main_Board/FreeRTOS/include
 -I
-D:\Dropbox\exchange\IAR PROJECTS\ANT_vertical_control\main_Board/CMSIS/CM3/DeviceSupport/ST/STM32F10x
+D:\Dropbox\exchange\IAR PROJECTS\GIT_repository\main_Board/CMSIS/CM3/DeviceSupport/ST/STM32F10x
 -I
-D:\Dropbox\exchange\IAR PROJECTS\ANT_vertical_control\main_Board/STM32F10x_StdPeriph_Driver/src
+D:\Dropbox\exchange\IAR PROJECTS\GIT_repository\main_Board/STM32F10x_StdPeriph_Driver/src
 -I
-D:\Dropbox\exchange\IAR PROJECTS\ANT_vertical_control\main_Board/STM32F10x_StdPeriph_Driver/inc
+D:\Dropbox\exchange\IAR PROJECTS\GIT_repository\main_Board/STM32F10x_StdPeriph_Driver/inc
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.3\arm\CMSIS\Include
 -I
@@ -20,17 +20,17 @@ C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.3\arm\inc
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.3\arm\inc\c
 -I
-D:\Dropbox\exchange\IAR PROJECTS\ANT_vertical_control\main_Board
+D:\Dropbox\exchange\IAR PROJECTS\GIT_repository\main_Board
 -I
-D:\Dropbox\exchange\IAR PROJECTS\ANT_vertical_control\main_Board\FreeRTOS\sources
+D:\Dropbox\exchange\IAR PROJECTS\GIT_repository\main_Board\FreeRTOS\sources
 -I
-D:\Dropbox\exchange\IAR PROJECTS\ANT_vertical_control\main_Board\FreeRTOS\include
+D:\Dropbox\exchange\IAR PROJECTS\GIT_repository\main_Board\FreeRTOS\include
 -I
-D:\Dropbox\exchange\IAR PROJECTS\ANT_vertical_control\main_Board\CMSIS\CM3\DeviceSupport\ST\STM32F10x
+D:\Dropbox\exchange\IAR PROJECTS\GIT_repository\main_Board\CMSIS\CM3\DeviceSupport\ST\STM32F10x
 -I
-D:\Dropbox\exchange\IAR PROJECTS\ANT_vertical_control\main_Board\STM32F10x_StdPeriph_Driver\src
+D:\Dropbox\exchange\IAR PROJECTS\GIT_repository\main_Board\STM32F10x_StdPeriph_Driver\src
 -I
-D:\Dropbox\exchange\IAR PROJECTS\ANT_vertical_control\main_Board\STM32F10x_StdPeriph_Driver\inc
+D:\Dropbox\exchange\IAR PROJECTS\GIT_repository\main_Board\STM32F10x_StdPeriph_Driver\inc
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.3\arm\CMSIS\Include
 -DSTM32F10X_HD=1

@@ -9,7 +9,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=513070543
+Checksum=23085722
 [CodeCoverage]
 Enabled=_ 0
 [Exceptions]
@@ -58,8 +58,9 @@ Fmt1=MPU6500_out_data_t-ACC_Z	3	0
 [array_types]
 Fmt0=uint16_t[6]	3	0
 [watch_formats]
-Fmt0={W}1:reg1	4	0
-Fmt1={W}1:temp_data	4	0
+Fmt0={W}1:addr + 2*a_cnt	4	0
+Fmt1={W}1:reg1	4	0
+Fmt2={W}1:temp_data	4	0
 [Trace1]
 Enabled=0
 ShowSource=1

@@ -70,13 +70,15 @@
 ///////////////////////////////////ACC and GYRO data///////////////////////////
 typedef struct
 {
+  uint16_t GYRO_X;
+  uint16_t GYRO_Y;
+  uint16_t GYRO_Z;
+  
   uint16_t ACC_X;
   uint16_t ACC_Y;
   uint16_t ACC_Z;
   ///////////////
-  uint16_t GYRO_X;
-  uint16_t GYRO_Y;
-  uint16_t GYRO_Z;
+
   //////////////
 }MPU6500_out_data_t;
 /////////////////////////////Config gyroscope////////////////////////////////////
