@@ -1,7 +1,7 @@
 #define SPI_GYRO SPI1
 #define CS_HIGH GPIOA->ODR |= GPIO_ODR_ODR4;
 #define CS_LOW GPIOA->ODR &= ~GPIO_ODR_ODR4;
-
+#define GYRO_INT_RDY GPIOA -> IDR & GPIO_IDR_IDR0   
 /////////////////////////Register address definition////////////////////////////
 #define SELF_TEST_X_GYRO 0x00
 #define SELF_TEST_Y_GYRO 0x01
@@ -73,8 +73,6 @@ typedef struct
   uint16_t ACC_X;
   uint16_t ACC_Y;
   uint16_t ACC_Z;
-  //////////////
-  uint16_t TEMP;
   ///////////////
   uint16_t GYRO_X;
   uint16_t GYRO_Y;
@@ -130,6 +128,41 @@ typedef struct
   uint8_t reserved2:4;
 
 }MPU6500_ACC_Setiings2_t;
+///////////////////////
+typedef struct
+{
+  uint8_t RAW_RDY_EN:1;
+  uint8_t zero:2;
+  uint8_t FSYNC_INT_EN:1;
+  uint8_t FIFO_OVERFLOW_EN:1;
+  uint8_t zero2:1;
+  uint8_t WOW_EN:1;
+  uint8_t zero3:1;
+}INT_Enable_Setiings_t;
+//////////////////////
+typedef struct
+{
+  uint8_t Rezerved:1;
+  uint8_t BYPASS_EN:1;
+  uint8_t FSYNC_INT_MODE_EN:1;
+  uint8_t ACTL_FSYNC:1;
+  uint8_t INT_ANYRD_2CLEAR:1;
+  uint8_t LATCH_INT_EN:1;
+  uint8_t OPEN:1;
+  uint8_t ACTL:1;
+}INT_Pin_Config_t;
+/////////////////////////
+typedef struct
+{
+  uint8_t RAW_DATA_RDY_INT:1;
+  uint8_t DMP_INT:1;
+  uint8_t rezerved1:1;
+  uint8_t FSYNC_INT:1;
+  uint8_t FIFO_OVERFLOW_INT:1;
+  uint8_t rezerved2:1;
+  uint8_t WOW_INT:1;
+  uint8_t rezerved3:1;
+}INT_status_t;
 ///////////////////////Gyro offset//////////////////////////////////////////////
 typedef struct
 {
@@ -156,6 +189,8 @@ typedef struct
   uint8_t ACC_Z_SelfTest;
 }MPU6500_SelfTest_data_t;
 
+
+
 ////////////////////////////////////////////////
 void GYRO_SPI_CONFIG(void);
 //////////////
@@ -166,11 +201,13 @@ void READ_ACC_Settings(uint8_t* acc_read_ptr);
 void SET_ACC_Settings(uint8_t* acc_set_ptr);
 //////////////
 void GET_SELF_Test_data(uint8_t* st_ptr);
-void SET_Offset_data(uint8_t* offset_ptr);
+void SET_GYRO_Offset_data(uint8_t* offset_ptr);
+void SET_ACC_Offset_data(uint8_t* offset_ptr);
 //////////////
 void READ_GYRO_data(uint16_t* gyro_data_ptr);
 void READ_ACC_data(uint16_t* acc_data_ptr);
 void READ_ACC_GYRO_data(uint16_t* data_ptr);
+void READ_RAW_ACC_GYRO_data(uint16_t* data_ptr);
 /////////////
 void MPU6500_reg_read(uint8_t address, uint8_t* rd_ptr);
 void MPU6500_reg_write(uint8_t address, uint8_t* ptr);

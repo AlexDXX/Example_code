@@ -90,15 +90,22 @@ void GET_SELF_Test_data(uint8_t* st_ptr){
 }
 
 //////////////////////////////////////////////////////////////////////////
-void SET_Offset_data(uint8_t* offset_ptr){
+void SET_GYRO_Offset_data(uint8_t* offset_ptr){
   MPU6500_reg_write(0x13,offset_ptr);
-  MPU6500_reg_write(0x14,offset_ptr + 8);
-  MPU6500_reg_write(0x15,offset_ptr + 16);
-  MPU6500_reg_write(0x16,offset_ptr + 24);
-  MPU6500_reg_write(0x17,offset_ptr + 32);
-  MPU6500_reg_write(0x18,offset_ptr + 40);  
+  MPU6500_reg_write(0x14,offset_ptr + 1);
+  MPU6500_reg_write(0x15,offset_ptr + 2);
+  MPU6500_reg_write(0x16,offset_ptr + 3);
+  MPU6500_reg_write(0x17,offset_ptr + 4);
+  MPU6500_reg_write(0x18,offset_ptr + 5);  
 }
-
+void SET_ACC_Offset_data(uint8_t* offset_ptr){
+  MPU6500_reg_write(0x77,offset_ptr);
+  MPU6500_reg_write(0x78,offset_ptr + 1);
+  MPU6500_reg_write(0x7A,offset_ptr + 2);
+  MPU6500_reg_write(0x7B,offset_ptr + 3);
+  MPU6500_reg_write(0x7D,offset_ptr + 4);
+  MPU6500_reg_write(0x7E,offset_ptr + 5);  
+}
 ///////////////////////////////////////////////////////////////////////////
 void READ_GYRO_data(uint16_t* gyro_data_ptr){
   uint16_t* temp_data;
@@ -147,9 +154,9 @@ void READ_ACC_data(uint16_t* acc_data_ptr){
 void READ_ACC_GYRO_data(uint16_t* data_ptr){
   uint8_t temp_data_L, temp_data_H;
   uint16_t temp_rez, temp_data;
-  uint8_t ADDR_reg_array[14] = {0x3B,0x3C,0x3D,0x3E,0x3F,0x40,0x41, 0x42,0x3B,0x3C,0x3D,0x3E,0x3F,0x40};
+  uint8_t ADDR_reg_array[14] = {0x3B,0x3C,0x3D,0x3E,0x3F,0x40,0x3B,0x3C,0x3D,0x3E,0x3F,0x40};
   
-  for(uint8_t reg_cnt=0; reg_cnt < 7; reg_cnt++){
+  for(uint8_t reg_cnt=0; reg_cnt < 6; reg_cnt++){
     ///////////////////
   MPU6500_reg_read(ADDR_reg_array[reg_cnt*2] ,(uint8_t*)&temp_data_H);
   MPU6500_reg_read(ADDR_reg_array[reg_cnt*2 + 1 ],(uint8_t*)&temp_data_L);
@@ -165,3 +172,15 @@ void READ_ACC_GYRO_data(uint16_t* data_ptr){
   }
 }
 ///////////////////////////////////////////////////////////////////////////
+void READ_RAW_ACC_GYRO_data(uint16_t* data_ptr){
+    uint8_t temp_data_L, temp_data_H;
+  uint8_t ADDR_reg_array[14] = {0x3B,0x3C,0x3D,0x3E,0x3F,0x40,0x3B,0x3C,0x3D,0x3E,0x3F,0x40};
+  
+  for(uint8_t reg_cnt=0; reg_cnt < 6; reg_cnt++){
+    ///////////////////
+  MPU6500_reg_read(ADDR_reg_array[reg_cnt*2] ,(uint8_t*)&temp_data_H);
+  MPU6500_reg_read(ADDR_reg_array[reg_cnt*2 + 1 ],(uint8_t*)&temp_data_L);
+  *((uint16_t*)data_ptr + reg_cnt)= temp_data_L | (((uint16_t)temp_data_H) << 8);
+  ////////////////////
+  }
+}

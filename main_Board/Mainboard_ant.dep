@@ -50,6 +50,7 @@
       <file>$TOOLKIT_DIR$\CMSIS\Include\core_cmInstr.h</file>
       <file>$TOOLKIT_DIR$\inc\c\xencoding_limits.h</file>
       <file>$PROJ_DIR$\Debug\Obj\system_stm32f10x.pbi</file>
+      <file>$PROJ_DIR$\..\..\ANT_vertical_control\main_Board\LIS3MDL.c</file>
     </outputs>
     <file>
       <name>$PROJ_DIR$\startup_stm32f10x_hd.s</name>
@@ -79,7 +80,7 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 15 32 19 41 28 38 8 40 17 35 36 12 42 33 27 39</file>
+          <file> 41 12 33 19 39 8 40 17 35 28 42 27 36 32 15 38</file>
         </tool>
         <tool>
           <name>ICCARM</name>
@@ -106,7 +107,7 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 28 40 17 12 33 35 42 27 34 19 41 32 15 39 36 38</file>
+          <file> 39 40 17 12 35 28 42 33 34 19 41 32 15 27 36 38</file>
         </tool>
         <tool>
           <name>ICCARM</name>
@@ -133,7 +134,7 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 19 38 34 41 8 20 40 17 35 32 28 15 36 12 42 33 27 39</file>
+          <file> 39 17 34 40 35 12 33 36 8 20 19 41 28 42 27 32 15 38</file>
         </tool>
         <tool>
           <name>ICCARM</name>
