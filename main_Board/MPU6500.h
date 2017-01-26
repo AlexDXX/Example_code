@@ -41,6 +41,8 @@
 #define GYRO_YOUT_L 0x46
 #define GYRO_ZOUT_H 0x47
 #define GYRO_ZOUT_L 0x48
+#define PWR_MGMT_1 0x6B
+#define PWR_MGMT_2 0x6C
 ////////////////////////Settings parameter definitions//////////////////////////
 #define GYRO_FULL_SCALE_250dps 0x00
 #define GYRO_FULL_SCALE_500dps 0x01
@@ -60,13 +62,13 @@
 #define ACCEL_BW_10HZ 0x05
 #define ACCEL_BW_5HZ 0x06
 ///////////////////////////
-#define GYRO_BW_250HZ 0x00
-#define GYRO_BW_184HZ 0x01
-#define GYRO_BW_92HZ 0x02
-#define GYRO_BW_41HZ 0x03
-#define GYRO_BW_20HZ 0x04
-#define GYRO_BW_10HZ 0x05
-#define GYRO_BW_5HZ 0x06
+#define GYRO_BW_250HZ 0x00                                                      //Delay 0.97ms
+#define GYRO_BW_184HZ 0x01                                                      //Delay 2.9ms
+#define GYRO_BW_92HZ 0x02                                                       //Delay 3.9ms
+#define GYRO_BW_41HZ 0x03                                                       //Delay 5.9ms 
+#define GYRO_BW_20HZ 0x04                                                       //Delay 9.9ms
+#define GYRO_BW_10HZ 0x05                                                       //Delay 17.85ms 
+#define GYRO_BW_5HZ 0x06                                                        //Delay 33.48ms
 ///////////////////////////////////ACC and GYRO data///////////////////////////
 typedef struct
 {
@@ -165,6 +167,8 @@ typedef struct
   uint8_t WOW_INT:1;
   uint8_t rezerved3:1;
 }INT_status_t;
+
+
 ///////////////////////Gyro offset//////////////////////////////////////////////
 typedef struct
 {

@@ -163,7 +163,7 @@ void READ_ACC_GYRO_data(uint16_t* data_ptr){
   temp_data = temp_data_L | (((uint16_t)temp_data_H) << 8);
   ////////////////////
   if( ( (temp_data & 0x8000) >> 15) > 0){
-      temp_rez = ((~temp_data +1) &0x7FFF)|0x8000; 
+      temp_rez = ((~temp_data + 1) &0x7FFF)|0x8000; 
      }
   else{
       temp_rez = temp_data;
@@ -180,7 +180,8 @@ void READ_RAW_ACC_GYRO_data(uint16_t* data_ptr){
     ///////////////////
   MPU6500_reg_read(ADDR_reg_array[reg_cnt*2] ,(uint8_t*)&temp_data_H);
   MPU6500_reg_read(ADDR_reg_array[reg_cnt*2 + 1 ],(uint8_t*)&temp_data_L);
-  *((uint16_t*)data_ptr + reg_cnt)= temp_data_L | (((uint16_t)temp_data_H) << 8);
+  
+  *((uint16_t*)data_ptr + reg_cnt)= (uint16_t)temp_data_L | (((uint16_t)temp_data_H) << 8);
   ////////////////////
   }
 }
