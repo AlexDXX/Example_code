@@ -9,7 +9,7 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=1824683406
+Checksum=-1092457464
 [CodeCoverage]
 Enabled=_ 0
 [Exceptions]
@@ -52,12 +52,16 @@ ITMportsEnable=0
 ITMportsTermIO=0
 ITMportsLogFile=0
 ITMlogFile=$PROJ_DIR$\ITM.log
+[Trace1]
+Enabled=0
+ShowSource=1
 [struct_types]
 Fmt0=MPU6500_out_data_t-ACC_X	3	0
 Fmt1=MPU6500_out_data_t-ACC_Z	3	0
+Fmt2=MPU6500_raw_data_t-GYRO_X_H	1	0
 [array_types]
-Fmt0=float[3]	4	0
-Fmt1=int32_t[3]	3	0
+Fmt0=int32_t[3]	3	0
+Fmt1=int[6]	4	0
 Fmt2=uint16_t[6]	3	0
 [watch_formats]
 Fmt0={W}1:(float)(*((uint16_t*)acc_gyro_data_ptr + 3))	4	0
@@ -65,11 +69,9 @@ Fmt1={W}1:(float)(*((uint16_t*)acc_gyro_data_ptr + 4))	4	0
 Fmt2={W}1:addr + 2*a_cnt	4	0
 Fmt3={W}1:cur_Y	0	9
 Fmt4={W}1:current_deg	0	5
-Fmt5={W}1:reg1	4	0
-Fmt6={W}1:temp_data	4	0
-[Trace1]
-Enabled=0
-ShowSource=1
+Fmt5={W}1:filtered_angle	0	9
+Fmt6={W}1:reg1	4	0
+Fmt7={W}1:temp_data	4	0
 [Trace2]
 Enabled=0
 ShowSource=0
@@ -127,7 +129,7 @@ LoggingEnabled=_ 0
 LogFile=_ ""
 [DriverProfiling]
 Enabled=0
-Mode=1
+Mode=3
 Graph=0
 Symbiont=0
 Exclusions=

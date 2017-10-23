@@ -72,17 +72,42 @@
 ///////////////////////////////////ACC and GYRO data///////////////////////////
 typedef struct
 {
-  uint16_t GYRO_X;
-  uint16_t GYRO_Y;
-  uint16_t GYRO_Z;
+  short GYRO_X;
+  short GYRO_Y;
+  short GYRO_Z;
   
-  uint16_t ACC_X;
-  uint16_t ACC_Y;
-  uint16_t ACC_Z;
+  short ACC_X;
+  short ACC_Y;
+  short ACC_Z;
   ///////////////
 
   //////////////
 }MPU6500_out_data_t;
+
+////////////////////////////////////////////////////////////////////////////////
+typedef struct
+{
+  uint8_t GYRO_X_H;
+  uint8_t GYRO_X_L;
+   
+  uint8_t GYRO_Y_H;
+  uint8_t GYRO_Y_L;
+  
+  uint8_t GYRO_Z_H;
+  uint8_t GYRO_Z_L;
+  
+  uint8_t ACC_X_H;
+  uint8_t ACC_X_L;
+  
+  uint8_t ACC_Y_H;
+  uint8_t ACC_Y_L;
+  
+  uint8_t ACC_Z_H;
+  uint8_t ACC_Z_L;
+  ///////////////
+
+  //////////////
+}MPU6500_raw_data_t;
 /////////////////////////////Config gyroscope////////////////////////////////////
 typedef struct
 {
@@ -179,9 +204,15 @@ typedef struct
 ///////////////////ACC offset///////////////////////////////////////////////////
 typedef struct
 {
-  uint16_t X_offset;
-  uint16_t Y_offset;
-  uint16_t Z_offset;
+  uint8_t X_offset_H;
+  uint8_t X_offset_L;
+  
+  uint8_t Y_offset_H;
+  uint8_t Y_offset_L;
+   
+  uint8_t Z_offset_H;
+  uint8_t Z_offset_L;
+  
 }MPU6500_ACC_Offset_t;
 ////////////////////Self test data//////////////////////////////////////////////
 typedef struct
@@ -213,7 +244,8 @@ void SET_ACC_Offset_data(uint8_t* offset_ptr);
 void READ_GYRO_data(uint16_t* gyro_data_ptr);
 void READ_ACC_data(uint16_t* acc_data_ptr);
 void READ_ACC_GYRO_data(uint16_t* data_ptr);
-void READ_RAW_ACC_GYRO_data(uint16_t* data_ptr);
+void READ_RAW_ACC_GYRO_data(short* data_ptr);
+void READ_RAW_ACC_GYRO_data_mod(uint8_t* data_ptr);
 /////////////
 void MPU6500_reg_read(uint8_t address, uint8_t* rd_ptr);
 void MPU6500_reg_write(uint8_t address, uint8_t* ptr);

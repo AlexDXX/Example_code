@@ -5,26 +5,39 @@
 #include <math.h>
 
 #define F_gain 0.98
-#define AVG_MAX 1000
+#define LPF_alfa_coeff 0.05
+#define AVG_MAX 5
 #define MAX_CNT 64000
 #define F_TIMER 72000000
 #define Delay_TIMER TIM3
+
 #define LED1_ON GPIOB ->ODR |= GPIO_ODR_ODR7; 
 #define LED1_OFF GPIOB ->ODR &= ~GPIO_ODR_ODR7;
+
 #define LED2_ON GPIOB ->ODR |= GPIO_ODR_ODR8; 
 #define LED2_OFF GPIOB ->ODR &= ~GPIO_ODR_ODR8;
+
+
+
+#define ANT_X_TRESHOLD_LEVEL 100
+#define ANT_Y_TRESHOLD_LEVEL 100
+#define DIR_CW 0x1
+#define DIR_CCW 0x2
+#define MOTOR_START 0x1
+#define MOTOR_STOP 0x0
 uint16_t temp_filter;
 /////////////////Function prototypes////////////////
 uint8_t CALC_CHEKSUM (uint16_t length, uint8_t* ptr);
 void SEND_UART_data(uint8_t* tx_buffer, uint8_t data_length);
+void MOTOR_CMD(uint8_t MOTOR_ID, uint8_t MOTOR_STATE, uint8_t MOTOR_DIR);
 ////////////////Global variables definition////////
 uint8_t receive_data[10];
-float part_g,part_acc;
-long long AVG_offset_data[6];
+short AVG_offset_data[6];
 uint8_t rx_counter1=0, preg1=0,preg2=0;
 static uint8_t UART_TX_BUFFER[25] ={0xAA,0xBE,0x1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0} ;
+//static uint8_t UART_CMD_BUFFER[5] ={0xAA,0xBE,0x1,0,0,} ;
 uint32_t avg_cnt =0;
-
+int16_t temp_deg1=0 , temp_deg2=0, temp_deg3=0;
 SERIAL_PORT_msg_t SERIAL_PORT_msg;
 uint8_t read_status=2;
 CTRL_REG1_t CTRL_REG1;
@@ -45,46 +58,52 @@ MPU6500_SelfTest_data_t MPU6500_SelfTest_data;
 INT_Enable_Setiings_t INT_Enable_Setiings;
 INT_status_t INT_STATUS_REG;
 INT_Pin_Config_t INT_Pin_Config;
-
+MPU6500_raw_data_t RAW_data_test;
 
 struct Magnetometer_RAW_data {
   uint16_t X_mag_data;
   uint16_t Y_mag_data;
   uint16_t Z_mag_data;
-}Mag_data;
+}Mag_data;   
 
 struct  {
-  uint16_t X_gyro_raw_data_curent;
-  uint16_t Y_gyro_raw_data_curent;
-  uint16_t Z_gyro_raw_data_curent;
+  short X_gyro_raw_data_curent;
+  short Y_gyro_raw_data_curent;
+  short Z_gyro_raw_data_curent;
   ////////
-  uint16_t X_ACC_raw_data_curent;
-  uint16_t Y_ACC_raw_data_curent;
-  uint16_t Z_ACC_raw_data_curent;
+  short X_ACC_raw_data_curent;
+  short Y_ACC_raw_data_curent;
+  short Z_ACC_raw_data_curent;
   ////////
-  uint16_t X_gyro_deg_current;
-  uint16_t Y_gyro_deg_current;
-  uint16_t Z_gyro_deg_current;
+  short X_gyro_deg_current;
+  short Y_gyro_deg_current;
+  short Z_gyro_deg_current;
   
-  uint16_t Xaccel_deg_current;
-  uint16_t Yaccel_deg_current;
-  uint16_t Zaccel_deg_current;
+  short Xaccel_deg_current;
+  short Yaccel_deg_current;
+  short Zaccel_deg_current;
 }MPU6500_proc_data;
 
+
+
 float prev_deg[3] = {0,0,0};
+short prev_gyro_value[3] = {0,0,0};
+short current_gyro_value[3] = {0,0,0};
 float current_deg[3] = {0,0,0};
 float current_accel_deg[3] = {0,0,0};
 float acc_raw_data_float[3] = {0,0,0};
 float filtered_angle[3] = {0,0,0};
+float filtered_acc_angle[3] = {0,0,0};
+float prev_acc_data[3] = {0,0,0};
 float temp_float_deg=0;
-long long current_deg_value [3] = {0,0,0};
+short current_deg_view[3] = {0,0,0};
 uint8_t current_sign[3] ={0,0,0}; 
 uint8_t current_sign_gyro[3] ={0,0,0}; 
 uint8_t current_sign_acc[3] ={0,0,0};
 uint8_t current_sign_filtered[3] ={0,0,0};
 uint8_t prev_sign[3] ={0,0,0}; 
 uint8_t Read_Timer_CHECK(void);
-uint16_t current_value;
+short current_value;
 //inline void Restart_Timer(void);
 void Init_Read_timer(uint16_t delay_ms);
 ///////////////////////////////Main program/////////////////////////////////////
@@ -125,7 +144,7 @@ void main()
   USART2 ->CR1 &= ~ USART_CR1_M;                                                //Set 8 data bits 1 start bit
   USART2 ->CR2 &= ~(USART_CR2_STOP_0 | USART_CR2_STOP_1);                       //Set 1 stop bit
   //USART2 ->BRR  = (0x98 << 4)|((0x4)&0x0F );                                    //SET Baud rate
-  USART2 ->BRR = 0x27;
+  USART2 ->BRR = 0x271;
   USART2 ->CR1 |= USART_CR1_TE |USART_CR1_RE;                                   //Enable transmitter & receiver
   USART2 ->CR1 |= USART_CR1_RXNEIE;                                             //Rx interrupt enable      
   //////UART2 pin config///////
@@ -138,7 +157,7 @@ void main()
   USART3 -> CR1 |= USART_CR1_UE ;                                               //Enable USART module
   USART3 ->CR1 &= ~ USART_CR1_M;                                                //Set 8 data bits 1 start bit
   USART3 ->CR2 &= ~(USART_CR2_STOP_0 | USART_CR2_STOP_1);                       //Set 1 stop bit
-  USART3 ->BRR  = 0x138 ;  
+  USART3 ->BRR  = 0x137 ;  
   USART3 ->CR1 |= USART_CR1_TE |USART_CR1_RE;                                   //Enable transmitter & receiver
   USART3 ->CR1 |= USART_CR1_RXNEIE;                                             //Rx interrupt enable          
   ///////UART3 pin config////////
@@ -164,7 +183,6 @@ void main()
   CTRL_REG2.FULL_SCALE_CONFIG = FULL_SCALE_4_gauss; 
   
   CTRL_REG3.OPERATING_MODE_SEL = 0;
-  
   CTRL_REG4.Zaxis_OPERATION_MODE = ULTRA_HIGH_PERFOMANCE_MODE;
   
   MAG_INT_CFG.INTERRUPT_ACTIVE = 1;
@@ -183,7 +201,7 @@ void main()
   MPU6500_GyroSetiings.GYRO_self_test_X= 0;
   MPU6500_GyroSetiings.GYRO_self_test_Y= 0;
   MPU6500_GyroSetiings.GYRO_self_test_Z= 0;
-  MPU6500_Config.DLPF_CFG = 4;
+  MPU6500_Config.DLPF_CFG = 5;
   MPU6500_Config.EXT_SYNC_SET =0;
   MPU6500_Config.FIFO_mode =0;
   MPU6500_ACC_Setiings.ACC_FULL_SCALE_SEL = ACCEL_FULL_SCALE_8g;
@@ -203,41 +221,45 @@ void main()
   MPU6500_reg_write(PWR_MGMT_1,(uint8_t*)&preg1);
   MPU6500_reg_write(PWR_MGMT_2,(uint8_t*)&preg2);
   ////////////////////////
-  uint16_t *raw_data_ptr, *acc_gyro_data_ptr, *mag_data_ptr;
-  raw_data_ptr = (uint16_t *)&MPU6500_RAW_data;
-  acc_gyro_data_ptr = (uint16_t *)&MPU6500_proc_data;
-  mag_data_ptr = (uint16_t *)&Mag_data;
-
-//
-//for(int i=0; i < AVG_MAX; i++)
-//{ 
-//}
-//
-//  
-//  
-//  
+  short  *acc_gyro_data_ptr = (short *)&MPU6500_proc_data;
+ // int *raw_data_ptr = (int *)&MPU6500_RAW_data;
+ // mag_data_ptr = (uint16_t *)&Mag_data;
+//LED2_ON
+//  for(int t=0;t<1000000;t++){};
 //  for(uint16_t t=0; t < AVG_MAX; t++){
 //    while(!GYRO_INT_RDY){};
-//    
 //      MPU6500_reg_read(INT_STATUS,(uint8_t*)&INT_STATUS_REG);
 //      if(INT_STATUS_REG.RAW_DATA_RDY_INT==1){
 //        INT_STATUS_REG.RAW_DATA_RDY_INT=0;
-//       READ_RAW_ACC_GYRO_data((uint16_t*)&MPU6500_RAW_data);                    //Read raw data
+//       READ_RAW_ACC_GYRO_data((short*)&MPU6500_RAW_data);                    //Read raw data
 //      /////////////////////////////////////////////////////
 //       
 //    for(uint8_t k=0;k < 6; k++){
-//     AVG_offset_data[k] = AVG_offset_data[k] + *((uint16_t *)raw_data_ptr + k);
-//
+//     AVG_offset_data[k] = *((uint16_t*)raw_data_ptr + k) + AVG_offset_data[k];
 //    }
+//
 //    }
 //  }
-//
-//  for(uint8_t i=0;i < 3; i++){
+//  for(uint8_t i=0;i < 6; i++){
 //    AVG_offset_data[i] = AVG_offset_data[i]/AVG_MAX;
-//    AVG_offset_data[i+3] = AVG_offset_data[i+3]/AVG_MAX;
 //  }
+//   MPU6500_ACC_Offset.X_offset_H = (uint8_t)((AVG_offset_data[3]&0xFF00) >> 8);
+//   MPU6500_ACC_Offset.X_offset_L = (uint8_t)(AVG_offset_data[3]&0xFF);
+//   MPU6500_ACC_Offset.Y_offset_H = (uint8_t)((AVG_offset_data[4]&0xFF00) >> 8);
+//   MPU6500_ACC_Offset.Y_offset_L = (uint8_t)(AVG_offset_data[4]&0xFF);
+//   MPU6500_ACC_Offset.Z_offset_H = (uint8_t)((AVG_offset_data[5]&0xFF00) >> 8);
+//   MPU6500_ACC_Offset.Z_offset_L = (uint8_t)(AVG_offset_data[5]&0xFF);
+//  ///////////////////////////////////////////
+//   MPU6500_reg_write(0x77,  (uint8_t*)&(MPU6500_ACC_Offset.X_offset_H));
+//   MPU6500_reg_write(0x78,  (uint8_t*)&(MPU6500_ACC_Offset.X_offset_L));
+//   MPU6500_reg_write(0x7A,  (uint8_t*)&(MPU6500_ACC_Offset.Y_offset_H));
+//   MPU6500_reg_write(0x7B,  (uint8_t*)&(MPU6500_ACC_Offset.Y_offset_L));
+//   MPU6500_reg_write(0x7D,  (uint8_t*)&(MPU6500_ACC_Offset.Z_offset_H));
+//   MPU6500_reg_write(0x7E,  (uint8_t*)&(MPU6500_ACC_Offset.Z_offset_L));
+//   
+// // SET_ACC_Offset_data((uint8_t*)&MPU6500_ACC_Offset);
 //  
-//  LED1_ON
+//  LED2_OFF
   for(int t=0;t<1000000;t++){};
   //MPU6500_reg_read(INT_STATUS,(uint8_t*)&INT_STATUS_REG);
   while(1){
@@ -249,121 +271,73 @@ void main()
         if(INT_STATUS_REG.RAW_DATA_RDY_INT==1){
           INT_STATUS_REG.RAW_DATA_RDY_INT=0;
         
-           READ_ACC_GYRO_data(acc_gyro_data_ptr);
-         // READ_RAW_ACC_GYRO_data(acc_gyro_data_ptr);
+         //  READ_ACC_GYRO_data(acc_gyro_data_ptr);
+         READ_RAW_ACC_GYRO_data(acc_gyro_data_ptr);
           ///////////////////////
            LED1_ON;
            for(uint8_t i = 0;i < 3; i++){
-             acc_raw_data_float[i] = (float)(*((uint16_t*)acc_gyro_data_ptr + i + 3) & 0x7FFF)  ;
-             switch(i){
-             case 0:
-               current_accel_deg[i] =572.95*atanf(acc_raw_data_float[0]/ sqrt(acc_raw_data_float[1]*acc_raw_data_float[1] + acc_raw_data_float[2]*acc_raw_data_float[2]));
-               break;
-             case 1:
-               current_accel_deg[i] = 572.95*atanf(acc_raw_data_float[1]/sqrt(acc_raw_data_float[0]*acc_raw_data_float[0]+ acc_raw_data_float[2]*acc_raw_data_float[2]));
-               break;
-             case 2:
-               current_accel_deg[i] = 572.95*atanf(acc_raw_data_float[2]/ sqrt(acc_raw_data_float[0]*acc_raw_data_float[0]+ acc_raw_data_float[1]*acc_raw_data_float[1]));
-               break;
-             }
+              acc_raw_data_float[i] = (float)(*((short*)acc_gyro_data_ptr + i + 3));
            }
            
-  for(uint8_t j = 0;j < 3; j++){
-           current_value =  (*((uint16_t*)acc_gyro_data_ptr + j))&0x7FFF;
-              
-            temp_float_deg = (float)current_value * 0.00153;
+           current_accel_deg[0] = 572.95*atan2f(acc_raw_data_float[0], sqrt(acc_raw_data_float[1]*acc_raw_data_float[1] + acc_raw_data_float[2]*acc_raw_data_float[2]));
+           current_accel_deg[1] = 572.95*atan2f(acc_raw_data_float[1], sqrt(acc_raw_data_float[0]*acc_raw_data_float[0] + acc_raw_data_float[2]*acc_raw_data_float[2]));
+           current_accel_deg[2] = 572.95*atan2f(acc_raw_data_float[2], sqrt(acc_raw_data_float[0]*acc_raw_data_float[0] + acc_raw_data_float[1]*acc_raw_data_float[1]));
            
-            ////////////////////////////////////////////////////////////
-            if((*((uint16_t*)acc_gyro_data_ptr + j) & 0x8000) > 0){
-              current_sign_gyro[j] =1;
-              if(prev_sign[j] == 1){
-                current_deg[j] = prev_deg[j] + temp_float_deg;
-                current_sign[j] =1;
-              }
-              else{
-                if(temp_float_deg > prev_deg[j]){
-                  current_deg[j] = temp_float_deg - prev_deg[j]; 
-                  current_sign[j] =1;
-                }
-                else{
-                  current_deg[j] = prev_deg[j] - temp_float_deg;
-                  current_sign[j] =0;
-                }
-              }
-            }
-            else{
-              current_sign_gyro[j] =0;
-              if(prev_sign[j] == 1){
-                if(temp_float_deg > prev_deg[j]){
-                  current_deg[j] = temp_float_deg - prev_deg[j]; 
-                  current_sign[j] = 0;
-                }
-                else{
-                  current_deg[j] = prev_deg[j] - temp_float_deg;
-                  current_sign[j] =1;
-                }
-              }
-              else{
-                current_deg[j] = prev_deg[j] + temp_float_deg;
-                current_sign[j] = 0;
-              }
-            }
-     //prev_deg[j] = current_deg[j];
-     
-     current_deg_value[j] = current_deg[j];
-     ///////////////////////////////////////////////////////////////////////
-    if(current_sign[j] ==1){
-       *((uint16_t*)acc_gyro_data_ptr + j + 6) = (((uint16_t)current_deg_value[j]) & 0x7FFF)  | 0x8000;
-     }
-     else{
-       *((uint16_t*)acc_gyro_data_ptr + j + 6) = ((uint16_t)current_deg_value[j]) & 0x7FFF;
-     }
-    /////////////////////////////////////////////////////////////////////////////
-    if((*((uint16_t*)acc_gyro_data_ptr + j + 3) & 0x8000) > 0){
-      current_sign_acc[j] = 1;
-       *((uint16_t*)acc_gyro_data_ptr + j + 9) =(((uint16_t)current_accel_deg[j])& 0x7FFF) | 0x8000;
-    }
-    else{
-      current_sign_acc[j] = 0;
-      *((uint16_t*)acc_gyro_data_ptr + j + 9) = ((uint16_t)current_accel_deg[j]) & 0x7FFF;
-    }
-    ////////////////////////////////////////////////////////////////////////////
-    
-    filtered_angle[0] = (F_gain)*current_deg[2] + (1 - F_gain)*current_accel_deg[0];
-    
-    
+  for(uint8_t j = 0;j < 3; j++){
+           
+           filtered_acc_angle[j] = prev_acc_data[j] +   LPF_alfa_coeff*(current_accel_deg[j] - prev_acc_data[j]);
+           prev_acc_data[j] = filtered_acc_angle[j];  
+       
+           current_value =  *((short*)acc_gyro_data_ptr + j);
+           current_deg[j] = prev_deg[j] + (float)current_value * 0.00153;
+           //prev_deg[j] = current_deg[j];
+           }        
   
-    // filtered_angle[0] =  + ;
-     prev_deg[j] = filtered_angle[0];
-     prev_sign[j] = current_sign[j];
-     
-     
-     
-     
-    ////////////////////////////////////////////////////////////////////////////
-    if(current_sign[2] > 0){
-      *((uint16_t*)acc_gyro_data_ptr + j) =  ((uint16_t)filtered_angle[j]) |0x8000;
-          }
-    else
-      *((uint16_t*)acc_gyro_data_ptr + j) = ((uint16_t)filtered_angle[j]) & 0x7FFF;
+            filtered_angle[0] = (F_gain)*current_deg[0] + (1 - F_gain)*filtered_acc_angle[2];
+            filtered_angle[1] = (F_gain)*current_deg[1] + (1 - F_gain)*filtered_acc_angle[1];
+            filtered_angle[2] = (F_gain)*current_deg[2] + (1 - F_gain)*filtered_acc_angle[0];
+            
+            prev_deg[0] = filtered_angle[0];
+            prev_deg[1] = filtered_angle[1];
+            prev_deg[2] = filtered_angle[2];
+////////////////////////////////////////////           
+     for(uint8_t j = 0;j < 3; j++){  
+          current_deg_view[j] = current_deg[j];
+////////////////////////////////////////////////
+      *((uint16_t*)acc_gyro_data_ptr + j + 6) = current_deg_view[j];
+      *((uint16_t*)acc_gyro_data_ptr + j + 9) = filtered_acc_angle[j];
+      *((uint16_t*)acc_gyro_data_ptr + j) = filtered_angle[j];
+      
+/////////////////////////////////////////////////////  
   }
         LED1_OFF;
-    /////////////////////////////////////////////////////////////////////////////          
+////////////////////////////////////////////////////////////////////////////////          
         for(uint8_t i=0;i < 24; i++){
           UART_TX_BUFFER[3 + i] = *((uint8_t *)acc_gyro_data_ptr + i);
         } 
-         
-//       read_status = LIS3MDL_Read_data_XYZ((uint16_t*)&Mag_data);
-//       if(read_status==0){
-//          for(uint8_t i=0;i < 6; i++){
-//             UART_TX_BUFFER[16 + i] = *((uint8_t *)acc_gyro_data_ptr + i + 18);
-//           }  
-//          read_status =2;
-//        }
         SEND_UART_data((uint8_t*)&UART_TX_BUFFER, 28);
-      
-      
-    // LED1_OFF
+//////////////////////////////Control motor ////////////////////////////////////
+        if(MPU6500_proc_data.Xaccel_deg_current > 55){
+          MOTOR_CMD(0x1,MOTOR_START, DIR_CW);
+        }
+ if((MPU6500_proc_data.Xaccel_deg_current < 50)&& (MPU6500_proc_data.Xaccel_deg_current > 0)){
+          MOTOR_CMD(0x1,MOTOR_STOP, DIR_CW);
+        }
+        
+    if(MPU6500_proc_data.Xaccel_deg_current < -55){
+          MOTOR_CMD(0x1,MOTOR_START, DIR_CCW);
+        }
+         if((MPU6500_proc_data.Xaccel_deg_current > -50)&& (MPU6500_proc_data.Xaccel_deg_current < 0)){
+          MOTOR_CMD(0x1,MOTOR_STOP, DIR_CW);
+        }
+        temp_deg1 =0;
+        temp_deg2 =0;
+        temp_deg3 =0;
+         // 
+        //}
+//        else{
+//          
+//        }
     }
   }
   }
@@ -375,7 +349,13 @@ void USART1_IRQHandler(void){
     receive_data[rx_counter1++] = USART1->DR ;
   }
 }
-
+////////////////////////////////////////////////////////////////////////////////
+void USART3_IRQHandler(void){
+  if( (USART3 ->SR)& USART_SR_RXNE )
+  {
+    receive_data[rx_counter1++] = USART3->DR ;
+  }
+}
 ////////////////////////////////////////////////////////////////////////////////
 uint8_t CALC_CHEKSUM (uint16_t length, uint8_t* ptr)
 {
@@ -399,6 +379,17 @@ void SEND_UART_data(uint8_t* tx_buffer, uint8_t data_length)
     }
  while(!(USART1->SR & USART_SR_TC)); 
 }
+ ///////////////////////////////////////////////////////////////////////////////
+ void SEND_UART_cmd_data(uint8_t* tx_buffer, uint8_t data_length)
+{ 
+  *(uint8_t*)(tx_buffer + 2) = 0x01; 
+  *(uint8_t*)(tx_buffer + data_length - 1) = CALC_CHEKSUM (data_length - 1,tx_buffer);
+    for(int tx_counter=0; tx_counter < data_length;tx_counter++ ){
+      USART3 ->DR = *(uint8_t*)(tx_buffer + tx_counter);                        //Load data to shift register        
+    while((USART3->SR & USART_SR_TXE) == 0);                                    //Wait for data transmission
+    }
+ while(!(USART3->SR & USART_SR_TC)); 
+}
 ////////////////////////////////////////////////////////////////////////////////
 void Init_Read_timer(uint16_t delay_ms){
     Delay_TIMER->PSC = F_TIMER/3000-1;
@@ -421,5 +412,14 @@ uint8_t Read_Timer_CHECK(void){
   }
   return temp_state;
 }
-
-
+////////////////////////////////////////////////////////////////////////////////
+void MOTOR_CMD(uint8_t MOTOR_ID, uint8_t MOTOR_STATE, uint8_t MOTOR_DIR){
+  uint8_t UART_CMD_BUFFER[6] ={0,0,0,0,0,0} ;
+  UART_CMD_BUFFER[0] = 0xAA;
+  UART_CMD_BUFFER[1] = 0xEF;
+  UART_CMD_BUFFER[2] = MOTOR_ID;
+  UART_CMD_BUFFER[3] = MOTOR_STATE;
+  UART_CMD_BUFFER[4] = MOTOR_DIR;
+ ///////////////////////
+  SEND_UART_cmd_data((uint8_t*)&UART_CMD_BUFFER[0], 6);
+}
